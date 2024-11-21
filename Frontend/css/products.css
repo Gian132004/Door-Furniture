@@ -1,0 +1,101 @@
+/* Styled Nav Links as Buttons */
+.nav-button {
+  background-color: #a04932; /* Deep red-brown */
+  color: #ffffff; /* White text */
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none; /* Remove underline */
+  display: block; /* Make it behave like a button */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px; /* Space between buttons */
+}
+
+/* Hover Effect */
+.nav-button:hover {
+  background-color: #8e3e29; /* Darker red-brown */
+}
+
+/* Active State */
+.nav-button.active {
+  background-color: #8e3e29; /* Same as hover for active state */
+}
+
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light gray */
+  color: #4b382a; /* Dark brown */
+}
+
+/* Sidebar Styling */
+.sidebar {
+  background-color: #D7CBA6; /* Updated background color */
+  padding: 20px; /* Add some padding for a better look */
+  border-right: 2px solid #b89d77; /* Light brown border */
+}
+
+.sidebar-title {
+  color: #603e22; /* Medium brown */
+  font-weight: bold;
+}
+
+/* Button Styling */
+.btn-danger {
+  background-color: #a04932; /* Deep red-brown */
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #8e3e29; /* Darker red-brown */
+}
+
+/* Product Cards */
+.product-card {
+  background-color: #fff; /* White for card background */
+  border: 1px solid #f0e6d6; /* Light beige border */
+  border-radius: 10px;
+}
+
+.card-title {
+  color: #6c4f3d; /* Dark brown for Wooden Tables */
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-text {
+  font-size: 14px;
+  color: #333; /* Dark text for card text */
+}
+
+.card .btn-warning {
+  background-color: #6c4f3d; /* Dark brown for 'Go somewhere' button */
+  border-color: #6c4f3d;
+}
+
+.card .btn-warning:hover {
+  background-color: #4f342e; /* Darker brown for hover effect */
+}
+
+button.btn-primary {
+  background-color: #c68c53; /* Light brown for 'Add Product' button */
+  border: none;
+}
+
+button.btn-primary:hover {
+  background-color: #a67545; /* Darker brown on hover */
+}
+
+button.btn-danger {
+  background-color: #e63946; /* Red for logout button */
+  border: none;
+}
+
+button.btn-danger:hover {
+  background-color: #d62828; /* Darker red for hover */
+}
