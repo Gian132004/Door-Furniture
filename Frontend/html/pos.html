@@ -131,13 +131,24 @@
           <div class="current-product col-md-4">
             <div class="card shadow-sm" style="background-color: #EADDCA;">
               <div class="card-body">
-                <h5 class="card-title">Current Product</h5>
-                <div id="current-product-list"></div> <!-- Added to display added products -->
-                <p class="card-text" id="total-price">Total: Php 0.00</p> <!-- Displays total -->
+                <h5 class="card-title text-center">Current Product</h5>
+                <div id="current-product-list">
+                </div>
+          
+  
+                <hr class="total-divider">
+          
+                <div id="total-price" class="d-flex justify-content-between">
+                  <span id="total-label">Total:</span>
+                  <span id="total-amount" class="product-price">Php 0.00</span>
+                </div>
+                
                 <button class="btn checkout-btn w-100">Checkout</button>
               </div>
             </div>
-          </div>                      
+          </div>
+          
+                       
         </div>
       </div>
     </div>
