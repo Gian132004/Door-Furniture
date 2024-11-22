@@ -105,9 +105,9 @@ body {
 
 .total-divider {
     border: 0;
-    border-top: 3px solid black;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    border-top: 2px solid black;
+    margin-top: 20px;
+    margin-bottom: 1px;  
     width: 100%;
 }
 
