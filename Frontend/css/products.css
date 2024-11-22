@@ -1,67 +1,64 @@
-/* Styled Nav Links as Buttons */
 .nav-button {
-  background-color: #a04932; /* Deep red-brown */
-  color: #ffffff; /* White text */
+  background-color: #a04932;
+  color: #ffffff;
   border: none;
   font-size: 1rem;
   font-weight: bold;
   padding: 10px 15px;
   text-align: center;
-  text-decoration: none; /* Remove underline */
-  display: block; /* Make it behave like a button */
+  text-decoration: none;
+  display: block;
   border-radius: 5px;
   transition: background-color 0.3s ease;
-  margin-bottom: 10px; /* Space between buttons */
+  margin-bottom: 10px;
 }
 
-/* Hover Effect */
 .nav-button:hover {
-  background-color: #8e3e29; /* Darker red-brown */
+  background-color: #8e3e29;
 }
 
-/* Active State */
 .nav-button.active {
-  background-color: #8e3e29; /* Same as hover for active state */
+  background-color: #8e3e29;
 }
 
-/* General Styling */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f4; /* Light gray */
-  color: #4b382a; /* Dark brown */
+  background-color: #f4f4f4;
+  color: #4b382a;
 }
 
-/* Sidebar Styling */
 .sidebar {
-  background-color: #D7CBA6; /* Updated background color */
-  padding: 20px; /* Add some padding for a better look */
-  border-right: 2px solid #b89d77; /* Light brown border */
+  background-color: #D7CBA6;
+  padding: 20px;
+  border-right: 2px solid #b89d77;
+  min-height: 100vh;
 }
 
 .sidebar-title {
-  color: #603e22; /* Medium brown */
+  color: #603e22;
   font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
-/* Button Styling */
 .btn-danger {
-  background-color: #a04932; /* Deep red-brown */
+  background-color: #a04932;
   border: none;
+  color: white;
 }
 
 .btn-danger:hover {
-  background-color: #8e3e29; /* Darker red-brown */
+  background-color: #8e3e29;
 }
 
-/* Product Cards */
 .product-card {
-  background-color: #fff; /* White for card background */
-  border: 1px solid #f0e6d6; /* Light beige border */
+  background-color: #fff;
+  border: 1px solid #f0e6d6;
   border-radius: 10px;
 }
 
 .card-title {
-  color: #6c4f3d; /* Dark brown for Wooden Tables */
+  color: #6c4f3d;
 }
 
 .card-body {
@@ -70,32 +67,32 @@ body {
 
 .card-text {
   font-size: 14px;
-  color: #333; /* Dark text for card text */
+  color: #333;
 }
 
 .card .btn-warning {
-  background-color: #6c4f3d; /* Dark brown for 'Edit ' button */
+  background-color: #6c4f3d;
   border-color: #6c4f3d;
 }
 
 .card .btn-warning:hover {
-  background-color: #4f342e; /* Darker brown for hover effect */
+  background-color: #4f342e;
 }
 
 button.btn-primary {
-  background-color: #c68c53; /* Light brown for 'Add Product' button */
+  background-color: #c68c53;
   border: none;
 }
 
 button.btn-primary:hover {
-  background-color: #a67545; /* Darker brown on hover */
+  background-color: #a67545;
 }
 
 button.btn-danger {
-  background-color: #e63946; /* Red for logout button */
+  background-color: #e63946;
   border: none;
 }
 
 button.btn-danger:hover {
-  background-color: #d62828; /* Darker red for hover */
+  background-color: #d62828;
 }
