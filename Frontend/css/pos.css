@@ -153,7 +153,7 @@ body {
 
 .current-product-item .product-name {
     flex-grow: 1;
-    margin-right: 100px;
+    margin-right: 29px;
 }
 
 .current-product-item .product-price {
@@ -164,7 +164,7 @@ body {
     display: flex;
     justify-content: space-between;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 1px;
 }
 
 #total-label {
@@ -184,7 +184,7 @@ body {
 }
 
 #current-product-list {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .main-content {
