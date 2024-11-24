@@ -98,7 +98,11 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     transition: box-shadow 0.3s ease;
+    max-width: 250px; 
+    margin: 10px auto; 
+    border: 2px solid #b89d77; 
 }
+
 
 .card:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
@@ -143,7 +147,7 @@ body {
 .current-product-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     padding: 5px 0;
 }
 
@@ -174,7 +178,7 @@ body {
 .total-divider {
     border: 0;
     border-top: 2px solid #8B4513;
-    margin-top: 20px;
+    margin-top: 1px;
     margin-bottom: 1px;
     width: 100%;
 }
@@ -195,3 +199,18 @@ body {
     padding: 20px;
     border-radius: 8px;
 }
+.delete-btn {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #8B4513; 
+    color: white; 
+    border: none; 
+    border-radius: 3px; 
+    cursor: pointer; 
+  }
+  
+  .delete-btn:hover {
+    background-color: #7A3F0B; 
+  }
+  
