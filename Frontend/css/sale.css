@@ -158,3 +158,12 @@ tfoot td {
   background-color: #8e3e29;
   color: white;
 }
+/* Alternating Row Colors */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: #f8f9fa; /* Light Gray/White */
+}
+
+.table-striped tbody tr:nth-child(even) {
+  background-color: #f1f1f1; /* Light Beige Color */
+}
+
