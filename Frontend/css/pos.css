@@ -28,9 +28,10 @@ body {
 }
 
 .sidebar {
-    background-color: #D7CBA6;
-    padding: 20px;
-    border-right: 2px solid #b89d77;
+  background-color: #D7CBA6;
+  padding: 20px;
+  border-right: 2px solid #b89d77;
+  min-height: 100vh;
 }
 
 .sidebar-title {
@@ -95,17 +96,17 @@ body {
 
 .product-card .card {
     background-color: #EADDCA;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
     border-radius: 8px;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Added transform for scaling */
     max-width: 250px; 
     margin: 10px auto; 
     border: 2px solid #b89d77; 
 }
 
-
-.card:hover {
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
+.product-card .card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+    transform: scale(1.05); /* Slight scaling effect */
 }
 
 .card-body {
@@ -125,6 +126,7 @@ body {
 .card-title {
     color: #8B4513;
 }
+
 
 .total-divider {
     border: 0;
