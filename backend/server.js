@@ -1,29 +1,36 @@
-require('dotenv').config()
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const sysroute = require('./routes/route');
 
-const express = require ('express')
-const mongoose = require ('mongoose')
-const sysroute = require('./routes/route')
+// Create Express app
+const app = express();
 
-//app express
-const app = express()
+// Middleware to parse JSON
+app.use(express.json());
 
-app.use(express.json())
+// Log incoming requests
 app.use((req, res, next) => {
-    console.log(req.path, req.method)
-    next()
-})
+    console.log(req.path, req.method);
+    next();
+});
 
-//routes
-app.use('/api/route', sysroute)
+// Serve static files from the Frontend folder
+app.use(express.static(path.join(__dirname, 'Frontend')));
 
-//connect to db
+// Routes
+app.use('/api/route', sysroute);
+
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-.then(() =>{
-    //listen for req port
-app.listen(process.env.PORT, () => {
-    console.log('listening on port!!', process.env.PORT) 
-})
-})
-.catch((error) =>{
-    console.log(error)
-})
+    .then(() => {
+        console.log('Connected to MongoDB successfully');
+        // Start the server on the specified port
+        app.listen(process.env.PORT, () => {
+            console.log('Server listening on port', process.env.PORT);
+        });
+    })
+    .catch((error) => {
+        console.error('MongoDB connection error:', error);
+    });
