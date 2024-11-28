@@ -10,6 +10,7 @@ const cors = require('cors');
 const sysroute = require('./routes/route'); // Example route
 const productRoutes = require('./routes/productRoutes'); // Product-related routes
 
+
 // Initialize Express app
 const app = express();
 
@@ -20,6 +21,9 @@ app.use(express.json()); // Parse incoming JSON requests
 // Routes
 app.use('/api/route', sysroute); // Example route
 app.use('/api/products', productRoutes); // Must match the path you're calling
+// Serve static files (e.g., product images) from the "public" directory
+app.use(express.static('public')); // Assuming images are stored in "public" folder
+
 
 
 // MongoDB connection

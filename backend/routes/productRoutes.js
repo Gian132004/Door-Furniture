@@ -1,74 +1,31 @@
 const express = require('express');
-const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const Product = require('../models/productModel');
+const { getAllProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
+const router = express.Router();
 
-// Set up Multer storage configuration
+// Multer setup for handling file uploads
 const storage = multer.diskStorage({
-    destination: './uploads/', // Folder to store the uploaded files
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`); // Naming the file with a timestamp
-    },
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/'); // Folder where images will be saved
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Filename with timestamp
+  }
 });
 
-// Initialize Multer with the storage configuration
-const upload = multer({
-    storage,
-    limits: { fileSize: 10 * 1024 * 1024 }, // Limit to 10 MB
-    fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|gif/;
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = filetypes.test(file.mimetype);
-        if (extname && mimetype) {
-            return cb(null, true);
-        }
-        cb(new Error('Only image files are allowed!'));
-    },
-}).single('image'); // Expecting the image field in the form to be named 'image'
+const upload = multer({ storage: storage });
 
-// Get all products
-router.get('/', async (req, res) => {
-    const products = await Product.find();
-    res.json(products);
-});
+// Route to get all products
+router.get('/all', getAllProducts);
 
-// Add a new product with image upload
-router.post('/new', upload, async (req, res) => {
-    const { title, price, stock } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : ''; // Save the image URL
+// Route to create a new product with image upload
+router.post('/create', upload.single('productImage'), createProduct); // 'productImage' is the field name for the file
 
-    try {
-        const newProduct = new Product({ title, price, stock, image });
-        await newProduct.save();
-        res.status(201).json(newProduct);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
+// Route to update an existing product
+router.put('/update/:id', updateProduct);
 
-// Update a product
-router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true });
-        res.json(updatedProduct);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-// Delete a product
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-
-    try {
-        await Product.findByIdAndDelete(id);
-        res.json({ message: 'Product deleted successfully!' });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
+// Route to delete a product
+router.delete('/delete/:id', deleteProduct);
 
 module.exports = router;
