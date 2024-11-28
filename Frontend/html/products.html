@@ -28,14 +28,7 @@
           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
         </div>
         <div class="d-flex justify-content-center flex-wrap" id="productsContainer">
-          <div class="product-card card" style="margin: 10px; width: 16rem;">
-            <img src="/Frontend/images/Ac.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Interior Double Door</h5>
-              <p class="card-text">Stocks 8</p>
-              <a href="#" class="btn btn-warning editBtn" data-bs-toggle="modal" data-bs-target="#editProductModal" data-product-id="2" data-product-title="Interior Double Door" data-product-stock="5" data-product-image="/Frontend/images/Ac.jpg">Edit</a>
-            </div>
-          </div>
+          <!-- Products will be inserted here dynamically -->
         </div>
       </div>
 
@@ -64,7 +57,6 @@
                 <div class="mb-3">
                   <label for="productImage" class="form-label">Product Image</label>
                   <input type="file" class="form-control" id="productImage" accept="image/*" required>
-
                 </div>
                 <div id="imagePreview" class="mb-3" style="display:none;">
                   <img src="" id="previewImg" class="img-fluid" alt="Product Image Preview">
@@ -88,7 +80,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form id="editProductForm">
+              <form id="editProductForm" enctype="multipart/form-data">
                 <div class="mb-3">
                   <label for="editProductTitle" class="form-label">Product Title</label>
                   <input type="text" class="form-control" id="editProductTitle" required>
@@ -120,9 +112,7 @@
 
     </div>
   </div>
-  <script src="../js/products.js"></script>
-
-
+  <script src="/Frontend/js/products.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

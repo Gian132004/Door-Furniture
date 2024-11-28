@@ -79,26 +79,42 @@ document.getElementById('addProductForm').addEventListener('submit', async funct
 });
 
 // Open the Edit Modal with product details
+// Open edit modal and populate data
 async function openEditModal(productId) {
     try {
-        const response = await fetch(`http://localhost:5500/api/products/all`);
+        const response = await fetch('http://localhost:5500/api/products/all');
         const products = await response.json();
         const product = products.find(p => p._id === productId);
 
+        // Populate the form with the product data
         document.getElementById('editProductTitle').value = product.title;
         document.getElementById('editProductStock').value = product.stock;
         document.getElementById('editProductPrice').value = product.price;
         document.getElementById('editProductForm').dataset.id = product._id;
+
+        // Check if the product has an image and update the image preview
+        if (product.image) {
+            document.getElementById('editImagePreview').style.display = 'block';
+            document.getElementById('editPreviewImg').src = '/images/' + product.image;  // Assuming product.image is just the filename
+        } else {
+        }
+
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        modal.show();
+
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to load product details');
     }
 }
 
+
+
 // Update a product
 document.getElementById('editProductForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    const productId = e.target.dataset.id;
+    const productId = e.target.dataset.id; // Ensure the ID is passed correctly
     const formData = new FormData();
     formData.append('title', document.getElementById('editProductTitle').value);
     formData.append('stock', document.getElementById('editProductStock').value);
@@ -129,6 +145,7 @@ document.getElementById('editProductForm').addEventListener('submit', async func
         alert('Failed to update product');
     }
 });
+
 
 // Delete a product
 async function deleteProduct(productId) {
