@@ -1,16 +1,12 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema
+// Define the schema for the login model
+const loginSchema = new mongoose.Schema({
+    username: { type: String, required: true, unique: true }, // Username must be unique
+    password: { type: String, required: true },              // Store passwords securely (hashed in production)
+});
 
-const loginSchema = new Schema({
-    username: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    }
-}, { timestamps:true })
+// Create the Login model
+const Login = mongoose.model('Login', loginSchema);
 
-module.exports = mongoose.model('login', loginSchema )
+module.exports = Login;
