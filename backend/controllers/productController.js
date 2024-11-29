@@ -13,46 +13,58 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+
 // Create a new product
 const createProduct = async (req, res) => {
     const { title, stock, price } = req.body;
-    const image = req.file?.path; // Get the file path from the upload
+    const image = req.file?.filename; // Save only the filename (not the full path)
 
     try {
         const newProduct = new Product({
             title,
             stock,
             price,
-            image, // Save the file path in your product data
+            image, // Store the renamed file's name in the database
         });
 
-        await newProduct.save(); // Save the new product
-        res.status(201).json(newProduct);  // Return the created product as a response
+        await newProduct.save();
+        res.status(201).json(newProduct);
     } catch (error) {
         res.status(400).json({ message: 'Error creating product', error: error.message });
     }
 };
 
+
 // Update an existing product
 const updateProduct = async (req, res) => {
     const { id } = req.params;
-    const { title, stock, price } = req.body;
-    const image = req.file?.path; // Get image from form data if uploaded
 
     try {
-        const updates = { title, stock, price };
-        if (image) {
-            updates.image = image; // Include image if it's provided
+        // Prepare updated fields
+        const updates = {
+            title: req.body.title,
+            stock: req.body.stock,
+            price: req.body.price,
+        };
+
+        // If a new image is uploaded, add it to updates
+        if (req.file) {
+            updates.image = req.file.path.replace('public/images', ''); // Save relative path
         }
 
+        // Update the product in the database
         const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
-        if (!updatedProduct) return res.status(404).json({ message: 'Product not found' });
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
         res.status(200).json(updatedProduct);
     } catch (error) {
         res.status(400).json({ message: 'Error updating product', error: error.message });
     }
 };
+
 
 // Delete a product
 const deleteProduct = async (req, res) => {

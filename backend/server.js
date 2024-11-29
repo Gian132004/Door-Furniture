@@ -1,10 +1,13 @@
 // Load environment variables
 require('dotenv').config();
 
+
+
 // Import dependencies
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 // Import routes
 const sysroute = require('./routes/route'); // Example route
@@ -22,7 +25,8 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use('/api/route', sysroute); // Example route
 app.use('/api/products', productRoutes); // Must match the path you're calling
 // Serve static files (e.g., product images) from the "public" directory
-app.use(express.static('public')); // Assuming images are stored in "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 
@@ -36,6 +40,7 @@ const connectDB = async () => {
     process.exit(1); // Exit process if the database connection fails
   }
 };
+
 
 // Start the server
 const startServer = async () => {

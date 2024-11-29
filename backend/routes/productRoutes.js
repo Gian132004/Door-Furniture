@@ -16,6 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+
+
 // Route to get all products
 router.get('/all', getAllProducts);
 
@@ -23,7 +25,7 @@ router.get('/all', getAllProducts);
 router.post('/create', upload.single('productImage'), createProduct); // 'productImage' is the field name for the file
 
 // Route to update an existing product
-router.put('/update/:id', updateProduct);
+router.put('/update/:id', upload.single('productImage'), updateProduct);
 
 // Route to delete a product
 router.delete('/delete/:id', deleteProduct);
