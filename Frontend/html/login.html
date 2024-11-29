@@ -17,24 +17,39 @@
                 <h1 class="login-title">Log in to your account</h1>
             </header>
 
-
             <section class="welcome-message">Welcome back! Please enter your details.</section>
 
-           
-            <form action="/Frontend/html/pos.html" method="GET">
-                <label class="email-label">Email</label>
-                <input type="email" class="frame1" placeholder="Enter your email" required>
+            <form>
+                <!-- Email Field -->
+                <label for="email" class="email-label">Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    class="frame1" 
+                    placeholder="Enter your email" 
+                    required>
 
-                <label class="password-label">Password</label>
-                <input type="password" class="frame2" placeholder="Enter your password" required>
+                <!-- Password Field -->
+                <label for="password" class="password-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="frame2" 
+                    placeholder="Enter your password" 
+                    required>
 
+                <!-- Sign In Button -->
                 <button type="submit" class="frame3 sign-in">Sign in</button>
-                
+
+                <!-- Forgot Password Link -->
                 <a class="forgot-password" href="/Frontend/html/forgot-password.html">Forgot Password?</a>
             </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="/Frontend/js/login.js"></script>
 </body>
 </html>

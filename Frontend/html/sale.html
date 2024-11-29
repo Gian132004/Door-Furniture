@@ -27,11 +27,11 @@
         <!-- Month Filter Dropdown -->
         <div class="mb-3">
           <label for="monthFilter" class="form-label">Filter by Month</label>
-          <select id="monthFilter" class="form-select" onchange="filterSalesByMonth()">
+          <select id="monthFilter" class="form-select w-auto" onchange="filterSalesByMonth()">
             <option value="all">All</option>
             <option value="11-2024">November 2024</option>
             <option value="10-2024">October 2024</option>
-            <option value="9-2024">September 2024</option>
+            <option value="10-2024">October 2024</option>
             <!-- Add more months if needed -->
           </select>
         </div>
@@ -80,7 +80,7 @@
               <td>2024-11-25</td>
               <td>10</td>
             </tr>
-            <tr data-date="2024-11-25">
+            <tr data-date="2024-10-25">
               <td>Booxton Door</td>
               <td>2024-10-25</td>
               <td>10</td>
@@ -96,6 +96,12 @@
               <td id="totalSold">0</td> <!-- This will be updated dynamically -->
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" class="text-end fw-bold">Total Sold:</td>
+              <td>30</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
@@ -105,5 +111,4 @@
   <script src="/Frontend/js/sale.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
-</html>
+
