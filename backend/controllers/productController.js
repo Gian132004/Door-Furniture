@@ -17,14 +17,14 @@ const getAllProducts = async (req, res) => {
 // Create a new product
 const createProduct = async (req, res) => {
     const { title, stock, price } = req.body;
-    const image = req.file?.filename; // Save only the filename (not the full path)
+    const image = req.file?.filename;
 
     try {
         const newProduct = new Product({
             title,
             stock,
             price,
-            image, // Store the renamed file's name in the database
+            image,
         });
 
         await newProduct.save();
@@ -34,25 +34,20 @@ const createProduct = async (req, res) => {
     }
 };
 
-
-// Update an existing product
 const updateProduct = async (req, res) => {
     const { id } = req.params;
 
     try {
-        // Prepare updated fields
         const updates = {
             title: req.body.title,
             stock: req.body.stock,
             price: req.body.price,
         };
 
-        // If a new image is uploaded, add it to updates
         if (req.file) {
-            updates.image = req.file.path.replace('public/images', ''); // Save relative path
+            updates.image = req.file.filename; // Store the filename only
         }
 
-        // Update the product in the database
         const updatedProduct = await Product.findByIdAndUpdate(id, updates, { new: true });
 
         if (!updatedProduct) {
@@ -64,6 +59,7 @@ const updateProduct = async (req, res) => {
         res.status(400).json({ message: 'Error updating product', error: error.message });
     }
 };
+
 
 
 // Delete a product
