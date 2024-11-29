@@ -27,15 +27,16 @@ function displayProducts(products) {
         productCard.style.width = '16rem';
 
         productCard.innerHTML = `
-            <img src="/images/${product.image}" class="card-img-top" alt="${product.title}">
-            <div class="card-body">
-                <h5 class="card-title">${product.title}</h5>
-                <p class="card-text">Stocks: ${product.stock}</p>
-                <p class="card-text">Price: $${product.price}</p>
-                <button class="btn btn-warning editBtn" data-id="${product._id}">Edit</button>
-                <button class="btn btn-danger deleteBtn" data-id="${product._id}">Delete</button>
-            </div>
-        `;
+    <img src="/images/${product.image}" class="card-img-top" alt="${product.title}">
+    <div class="card-body">
+        <h5 class="card-title">${product.title}</h5>
+        <p class="card-text">Stocks: ${product.stock}</p>
+        <p class="card-text">Price: $${product.price}</p>
+        <button class="btn btn-warning editBtn" data-id="${product._id}">Edit</button>
+        <button class="btn btn-danger deleteBtn" data-id="${product._id}">Delete</button>
+    </div>
+`;
+
 
         productsContainer.appendChild(productCard);
     });
@@ -86,23 +87,28 @@ async function openEditModal(productId) {
         const products = await response.json();
         const product = products.find(p => p._id === productId);
 
+        if (!product) {
+            alert('Product not found!');
+            return;
+        }
+
         // Populate the form with the product data
         document.getElementById('editProductTitle').value = product.title;
         document.getElementById('editProductStock').value = product.stock;
         document.getElementById('editProductPrice').value = product.price;
-        document.getElementById('editProductForm').dataset.id = product._id;
+        document.getElementById('editProductForm').dataset.id = product._id; // Set dataset.id
 
         // Check if the product has an image and update the image preview
         if (product.image) {
             document.getElementById('editImagePreview').style.display = 'block';
-            document.getElementById('editPreviewImg').src = '/images/' + product.image;  // Assuming product.image is just the filename
+            document.getElementById('editPreviewImg').src = 'public/images/' + product.image; // Adjust the image path
         } else {
+            document.getElementById('editImagePreview').style.display = 'none';
         }
 
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
         modal.show();
-
     } catch (error) {
         console.error('Error:', error);
         alert('Failed to load product details');
@@ -111,10 +117,17 @@ async function openEditModal(productId) {
 
 
 
+
 // Update a product
 document.getElementById('editProductForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    const productId = e.target.dataset.id; // Ensure the ID is passed correctly
+
+    const productId = e.target.dataset.id; // Retrieve product ID
+    if (!productId) {
+        alert('Product ID is missing!');
+        return;
+    }
+
     const formData = new FormData();
     formData.append('title', document.getElementById('editProductTitle').value);
     formData.append('stock', document.getElementById('editProductStock').value);
@@ -147,6 +160,8 @@ document.getElementById('editProductForm').addEventListener('submit', async func
 });
 
 
+
+
 // Delete a product
 async function deleteProduct(productId) {
     if (confirm('Are you sure you want to delete this product?')) {
@@ -168,3 +183,4 @@ async function deleteProduct(productId) {
         }
     }
 }
+
