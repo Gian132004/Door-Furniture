@@ -38,6 +38,7 @@ function displayProducts(products) {
 `;
 
 
+
         productsContainer.appendChild(productCard);
     });
 
@@ -99,12 +100,12 @@ async function openEditModal(productId) {
         document.getElementById('editProductForm').dataset.id = product._id; // Set dataset.id
 
         // Check if the product has an image and update the image preview
-        if (product.image) {
-            document.getElementById('editImagePreview').style.display = 'block';
-            document.getElementById('editPreviewImg').src = 'public/images/' + product.image; // Adjust the image path
-        } else {
-            document.getElementById('editImagePreview').style.display = 'none';
-        }
+       if (product.image) {
+    document.getElementById('editImagePreview').style.display = 'block';
+    document.getElementById('editPreviewImg').src = `/images/${product.image}`; // Corrected path
+} else {
+    document.getElementById('editImagePreview').style.display = 'none';
+}
 
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
