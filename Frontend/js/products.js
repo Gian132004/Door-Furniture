@@ -27,18 +27,15 @@ function displayProducts(products) {
         productCard.style.width = '16rem';
 
         productCard.innerHTML = `
-    <img src="/images/${product.image}" class="card-img-top" alt="${product.title}">
-    <div class="card-body">
-        <h5 class="card-title">${product.title}</h5>
-        <p class="card-text">Stocks: ${product.stock}</p>
-        <p class="card-text">Price: $${product.price}</p>
-        <button class="btn btn-warning editBtn" data-id="${product._id}">Edit</button>
-        <button class="btn btn-danger deleteBtn" data-id="${product._id}">Delete</button>
-    </div>
-`;
-
-
-
+            <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
+            <div class="card-body">
+                <h5 class="card-title">${product.title}</h5>
+                <p class="card-text">Stocks: ${product.stock}</p>
+                <p class="card-text">Price: $${product.price}</p>
+                <button class="btn btn-warning editBtn" data-id="${product._id}">Edit</button>
+                <button class="btn btn-danger deleteBtn" data-id="${product._id}">Delete</button>
+            </div>
+        `;
         productsContainer.appendChild(productCard);
     });
 
@@ -81,7 +78,6 @@ document.getElementById('addProductForm').addEventListener('submit', async funct
 });
 
 // Open the Edit Modal with product details
-// Open edit modal and populate data
 async function openEditModal(productId) {
     try {
         const response = await fetch('http://localhost:5500/api/products/all');
@@ -100,12 +96,12 @@ async function openEditModal(productId) {
         document.getElementById('editProductForm').dataset.id = product._id; // Set dataset.id
 
         // Check if the product has an image and update the image preview
-       if (product.image) {
-    document.getElementById('editImagePreview').style.display = 'block';
-    document.getElementById('editPreviewImg').src = `/images/${product.image}`; // Corrected path
-} else {
-    document.getElementById('editImagePreview').style.display = 'none';
-}
+        if (product.image) {
+            document.getElementById('editImagePreview').style.display = 'block';
+            document.getElementById('editPreviewImg').src = `http://localhost:5500/images/${product.image}`; // Corrected path
+        } else {
+            document.getElementById('editImagePreview').style.display = 'none';
+        }
 
         // Show the modal
         const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
@@ -116,14 +112,11 @@ async function openEditModal(productId) {
     }
 }
 
-
-
-
 // Update a product
 document.getElementById('editProductForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    const productId = e.target.dataset.id; // Retrieve product ID
+    const productId = e.target.dataset.id;
     if (!productId) {
         alert('Product ID is missing!');
         return;
@@ -148,8 +141,8 @@ document.getElementById('editProductForm').addEventListener('submit', async func
         if (response.ok) {
             alert('Product updated successfully');
             fetchProducts(); // Refresh the product list
-            document.getElementById('editProductForm').reset();
-            document.getElementById('editProductModal').querySelector('.btn-close').click();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+            modal.hide(); // Close the modal
         } else {
             const error = await response.json();
             alert('Failed to update product: ' + error.message);
@@ -160,28 +153,26 @@ document.getElementById('editProductForm').addEventListener('submit', async func
     }
 });
 
-
-
-
 // Delete a product
 async function deleteProduct(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        try {
-            const response = await fetch(`http://localhost:5500/api/products/delete/${productId}`, {
-                method: 'DELETE',
-            });
+    if (!confirm('Are you sure you want to delete this product?')) {
+        return;
+    }
 
-            if (response.ok) {
-                alert('Product deleted successfully');
-                fetchProducts(); // Refresh the product list
-            } else {
-                const error = await response.json();
-                alert('Failed to delete product: ' + error.message);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Failed to delete product');
+    try {
+        const response = await fetch(`http://localhost:5500/api/products/delete/${productId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            alert('Product deleted successfully');
+            fetchProducts(); // Refresh the product list
+        } else {
+            const error = await response.json();
+            alert('Failed to delete product: ' + error.message);
         }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to delete product');
     }
 }
-
