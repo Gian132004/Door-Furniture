@@ -143,7 +143,17 @@ async function checkout() {
     alert(`Receipt:\n${receipt}\n\nTotal: Php ${total.toFixed(2)}`);
 
     try {
+        const sales = JSON.parse(localStorage.getItem('sales')) || [];
+
         for (const item of cart) {
+            // Save to localStorage for sales.html
+            sales.push({
+                title: item.name,
+                quantity: item.quantity,
+                date: new Date().toISOString().split('T')[0], // Save date in YYYY-MM-DD format
+            });
+
+            // Update stock in the backend
             await fetch(`http://localhost:5500/api/products/update-stock/${item.id}`, {
                 method: 'PUT',
                 headers: {
@@ -152,6 +162,8 @@ async function checkout() {
                 body: JSON.stringify({ quantity: item.quantity })
             });
         }
+
+        localStorage.setItem('sales', JSON.stringify(sales));
 
         cart = [];
         renderCart();
@@ -162,3 +174,4 @@ async function checkout() {
         alert('Failed to process checkout');
     }
 }
+
