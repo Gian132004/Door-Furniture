@@ -12,6 +12,7 @@ const path = require('path');
 // Import routes
 const sysroute = require('./routes/route'); // Example route
 const productRoutes = require('./routes/productRoutes'); // Product-related routes
+const saleRoutes = require('./routes/saleRoute');
 
 
 // Initialize Express app
@@ -26,6 +27,7 @@ app.use('/api/route', sysroute); // Example route
 app.use('/api/products', productRoutes); // Must match the path you're calling
 // Serve static files (e.g., product images) from the "public" directory
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/api/sales', saleRoutes);
 
 
 
