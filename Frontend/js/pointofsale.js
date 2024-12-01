@@ -45,7 +45,7 @@ function displayProducts(products) {
                 <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
                 <div class="card-body">
                     <h5 class="card-title">${product.title}</h5>
-                    <p class="card-text">Price: Php ${product.price}</p>
+                    <p class="card-text">Price: ₱${product.price}</p>
                     <p class="card-text">Stock: ${product.stock}</p>
                     <button class="btn btn-primary add-product" 
                             data-id="${product._id}" 
@@ -66,6 +66,7 @@ function displayProducts(products) {
     });
 }
 
+// Add product to the cart
 // Add product to the cart
 function addProductToCart(e) {
     const button = e.target;
@@ -100,6 +101,27 @@ function addProductToCart(e) {
     renderCart();
 }
 
+// Remove product from cart
+function removeProductFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    renderCart();
+}
+
+// Update product quantity in cart
+function updateProductQuantity(productId, change) {
+    const product = cart.find(item => item.id === productId);
+    if (!product) return;
+
+    product.quantity += change;
+    if (product.quantity <= 0) {
+        removeProductFromCart(productId);
+    } else if (product.quantity > product.stock) {
+        product.quantity = product.stock;
+        alert(`Only ${product.stock} units available for "${product.name}".`);
+    }
+    renderCart();
+}
+
 // Render cart in the current product section
 function renderCart() {
     const cartList = document.getElementById('current-product-list');
@@ -120,12 +142,28 @@ function renderCart() {
         cartItem.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'mb-2');
         cartItem.innerHTML = `
             <span>${item.name} (x${item.quantity})</span>
-            <span>Php ${item.price * item.quantity}</span>
+            <span style="white-space: nowrap;">₱${(item.price * item.quantity).toFixed(2)}</span>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-secondary me-1" onclick="updateProductQuantity('${item.id}', -1)">-</button>
+                <button class="btn btn-sm btn-secondary me-1" onclick="updateProductQuantity('${item.id}', 1)">+</button>
+                <button class="btn btn-sm btn-danger" onclick="removeProductFromCart('${item.id}')">Remove</button>
+            </div>
         `;
         cartList.appendChild(cartItem);
     });
 
-    totalAmount.textContent = `Php ${total.toFixed(2)}`;
+    totalAmount.textContent = `₱${total.toFixed(2)}`;
+}
+
+
+
+// Cancel checkout and clear the cart
+function cancelCheckout() {
+    if (confirm('Are you sure you want to cancel the checkout?')) {
+        cart = [];
+        renderCart();
+        alert('Checkout has been canceled.');
+    }
 }
 
 // Checkout and display a receipt
@@ -135,35 +173,32 @@ async function checkout() {
         return;
     }
 
-    const receipt = cart.map(item => {
-        return `${item.name} x${item.quantity} - Php ${item.price * item.quantity}`;
-    }).join('\n');
-
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    alert(`Receipt:\n${receipt}\n\nTotal: Php ${total.toFixed(2)}`);
-
     try {
-        const sales = JSON.parse(localStorage.getItem('sales')) || [];
-
-        for (const item of cart) {
-            // Save to localStorage for sales.html
-            sales.push({
-                title: item.name,
-                quantity: item.quantity,
-                date: new Date().toISOString().split('T')[0], // Save date in YYYY-MM-DD format
+        const salesPromises = cart.map(async item => {
+            // Save sale to MongoDB
+            const response = await fetch('http://localhost:5500/api/sales/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    title: item.name,
+                    quantity: item.quantity,
+                    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                }),
             });
 
-            // Update stock in the backend
+            if (!response.ok) {
+                throw new Error(`Failed to save sale for ${item.name}`);
+            }
+
+            // Update product stock in the backend
             await fetch(`http://localhost:5500/api/products/update-stock/${item.id}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ quantity: item.quantity })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ quantity: item.quantity }),
             });
-        }
+        });
 
-        localStorage.setItem('sales', JSON.stringify(sales));
+        await Promise.all(salesPromises);
 
         cart = [];
         renderCart();

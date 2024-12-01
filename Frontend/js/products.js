@@ -27,15 +27,16 @@ function displayProducts(products) {
         productCard.style.width = '16rem';
 
         productCard.innerHTML = `
-            <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
-            <div class="card-body">
-                <h5 class="card-title">${product.title}</h5>
-                <p class="card-text">Stocks: ${product.stock}</p>
-                <p class="card-text">Price: $${product.price}</p>
-                <button class="btn btn-warning editBtn" data-id="${product._id}">Edit</button>
-                <button class="btn btn-danger deleteBtn" data-id="${product._id}">Delete</button>
-            </div>
-        `;
+    <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
+    <div class="card-body">
+        <h5 class="card-title">${product.title}</h5>
+        <p class="card-text">Stocks: ${product.stock}</p>
+        <p class="card-text">Price: ₱${product.price}</p>
+        <button class="btn btn-warning text-white editBtn fw-bold" data-id="${product._id}">Edit</button>
+        <button class="btn btn-danger deleteBtn fw-bold" data-id="${product._id}">Delete</button>
+    </div>
+`;
+
         productsContainer.appendChild(productCard);
     });
 

@@ -11,7 +11,10 @@
   <div class="container-fluid vh-100">
     <div class="row h-100">
       <div class="sidebar col-md-3 col-lg-2 border-end p-3">
-        <h2 class="sidebar-title fs-5 text-center mb-4">Anthony’s Door Furniture</h2>
+        <!-- Centered logo -->
+        <div class="text-center mb-4">
+          <img src="/Frontend/images/logo.png" alt="Logo" class="img-fluid" style="width: 80%; height: auto;">
+        </div>
         <nav class="nav flex-column">
           <a href="/Frontend/html/pos.html" class="nav-button active">Point of Sale</a>
           <a href="/Frontend/html/products.html" class="nav-button">Products</a>
@@ -19,17 +22,17 @@
         </nav>
         <hr>
         <a href="/Frontend/html/login.html">
-          <button class="btn btn-danger w-100">Logout</button>
+          <button class="btn btn-danger w-100" style="margin-top: 200px;">Logout</button>
         </a>        
       </div>
-      <div class="main-content col-md-9 col-lg-10 p-4">
-        <h1 class="main-title fs-4">POINT OF SALE</h1>
+      <div class="main-content col-md-9 col-lg-10 p-4 mt">
+        <h1 class="main-title fs-4 fw-bold">POINT OF SALE</h1>
         <div class="row">
           <div class="product-list col-md-8">
             <div class="row g-3"></div>
           </div>
 
-          <div class="current-product col-md-4">
+          <div class="current-product col-md-4 mt-4">
             <div class="card shadow-sm" style="background-color: #EADDCA;">
               <div class="card-body">
                 <h5 class="card-title text-center">Current Product</h5>

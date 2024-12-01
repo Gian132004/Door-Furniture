@@ -11,20 +11,23 @@
   <div class="container-fluid vh-100">
     <div class="row h-100">
       <div class="sidebar col-md-3 col-lg-2 border-end p-3">
-        <h2 class="sidebar-title fs-5 text-center mb-4">Anthony’s Door Furniture</h2>
+         <!-- Centered logo -->
+         <div class="text-center mb-4">
+          <img src="/Frontend/images/logo.png" alt="Logo" class="img-fluid" style="width: 80%; height: auto;">
+        </div>
         <nav class="nav flex-column">
-          <a href="/Frontend/html/pos.html" class="nav-button">Point of Sale</a>
+          <a href="/Frontend/html/pos.html" class="nav-button active">Point of Sale</a>
           <a href="/Frontend/html/products.html" class="nav-button">Products</a>
-          <a href="/Frontend/html/sale.html" class="nav-button btn-danger-sale active">Sales</a>
+          <a href="/Frontend/html/sale.html" class="nav-button">Sales</a>
         </nav>
         <hr>
         <a href="/Frontend/html/login.html">
-          <button class="btn btn-danger w-100">Logout</button>
-        </a>        
+          <button class="btn btn-danger w-100" style="margin-top: 200px;">Logout</button>
+        </a>      
       </div>
 
       <div class="col-md-9 col-lg-10 p-4">
-        <h1 class="fs-4">Sales</h1>
+        <h1 class="fs-4 fw-bold">SALES REPORT</h1>
         
         <!-- Filters -->
         <div class="d-flex gap-3 align-items-center mb-3">
@@ -40,8 +43,9 @@
             <label for="yearFilter" class="form-label">Year</label>
             <input type="number" id="yearFilter" class="form-control w-auto" placeholder="YYYY">
           </div>
-          <button class="btn btn-primary" onclick="filterSales()">Apply Filters</button>
-          <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+          <button class="btn btn-primary" style="margin-top: 30px;" onclick="filterSales()">Apply Filters</button>
+          <button class="btn btn-secondary" style="margin-top: 30px;" onclick="clearFilters()">Clear Filters</button>
+
         </div>
         
         <!-- Sales Table -->

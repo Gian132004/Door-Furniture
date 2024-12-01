@@ -28,7 +28,7 @@ body {
 }
 
 .sidebar {
-  background-color: #D7CBA6;
+  background-color: rgb(234, 221, 202); /* Semi-transparent background */;
   padding: 20px;
   border-right: 2px solid #b89d77;
   min-height: 100vh;
@@ -115,7 +115,6 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     height: 100%;
-    padding: 10px;
 }
 
 .card-body h5, .card-body p {

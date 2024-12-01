@@ -11,23 +11,26 @@
   <div class="container-fluid vh-100">
     <div class="row h-100">
       <div class="sidebar col-md-3 col-lg-2 border-end p-3">
-        <h2 class="sidebar-title fs-5 text-center mb-4">Anthony’s Door Furniture</h2>
+         <!-- Centered logo -->
+         <div class="text-center mb-4">
+          <img src="/Frontend/images/logo.png" alt="Logo" class="img-fluid" style="width: 80%; height: auto;">
+        </div>
         <nav class="nav flex-column">
-          <a href="/Frontend/html/pos.html" class="nav-button">Point of Sale</a>
-          <a href="/Frontend/html/products.html" class="nav-button active">Products</a>
+          <a href="/Frontend/html/pos.html" class="nav-button active">Point of Sale</a>
+          <a href="/Frontend/html/products.html" class="nav-button">Products</a>
           <a href="/Frontend/html/sale.html" class="nav-button">Sales</a>
         </nav>
         <hr>
         <a href="/Frontend/html/login.html">
-          <button class="btn btn-danger w-100">Logout</button>
-        </a>        
+          <button class="btn btn-danger w-100" style="margin-top: 200px;">Logout</button>
+        </a>    
       </div>
 
       <div class="col-md-9 col-lg-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <h1 class="fs-4">Products</h1>
+          <h1 class="fs-4 fw-bold">PRODUCTS</h1>
           <!-- Trigger the modal -->
-          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">ADD A PRODUCT</button>
+          <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addProductModal">ADD A PRODUCT</button>
         </div>
         <div class="d-flex justify-content-center flex-wrap" id="productsContainer">
           <!-- Products will be inserted here dynamically -->
