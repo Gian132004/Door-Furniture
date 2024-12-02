@@ -29,9 +29,17 @@
       <div class="col-md-9 col-lg-10 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h1 class="fs-4 fw-bold">PRODUCTS</h1>
+
+          <!-- Search Bar and Button -->
+          <div class="d-flex">
+            <input type="text" id="searchBar" class="form-control me-2" placeholder="Search products" aria-label="Search products">
+            <button class="btn btn-secondary" id="searchButton">Search</button>
+          </div>
+
           <!-- Trigger the modal -->
           <button class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#addProductModal">ADD A PRODUCT</button>
         </div>
+
         <div class="d-flex justify-content-center flex-wrap" id="productsContainer">
           <!-- Products will be inserted here dynamically -->
         </div>

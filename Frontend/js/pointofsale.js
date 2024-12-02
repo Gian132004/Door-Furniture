@@ -7,9 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Checkout button not found.');
     }
+
+    const searchButton = document.getElementById('search-button');
+    if (searchButton) {
+        searchButton.addEventListener('click', searchProducts);
+    } else {
+        console.error('Search button not found.');
+    }
 });
 
 let cart = [];
+let allProducts = [];
 
 // Fetch all products from the backend API
 async function fetchProducts() {
@@ -19,6 +27,7 @@ async function fetchProducts() {
             throw new Error('Error fetching products');
         }
         const products = await response.json();
+        allProducts = products; // Save all products for search functionality
         displayProducts(products);
     } catch (error) {
         console.error('Error:', error);
@@ -66,7 +75,21 @@ function displayProducts(products) {
     });
 }
 
-// Add product to the cart
+// Search products by name
+function searchProducts() {
+    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    if (!searchQuery) {
+        displayProducts(allProducts); // If no search query, display all products
+        return;
+    }
+
+    const filteredProducts = allProducts.filter(product => 
+        product.title.toLowerCase().includes(searchQuery)
+    );
+
+    displayProducts(filteredProducts);
+}
+
 // Add product to the cart
 function addProductToCart(e) {
     const button = e.target;
@@ -155,17 +178,6 @@ function renderCart() {
     totalAmount.textContent = `₱${total.toFixed(2)}`;
 }
 
-
-
-// Cancel checkout and clear the cart
-function cancelCheckout() {
-    if (confirm('Are you sure you want to cancel the checkout?')) {
-        cart = [];
-        renderCart();
-        alert('Checkout has been canceled.');
-    }
-}
-
 // Checkout and display a receipt
 async function checkout() {
     if (cart.length === 0) {
@@ -209,4 +221,3 @@ async function checkout() {
         alert('Failed to process checkout');
     }
 }
-
