@@ -23,10 +23,8 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/forgot", async (req, res) => {
-  const { username } = req.body;
-
   try {
-    const user = await Login.findOne({ username, password });
+    const user = true;
 
     if (user) {
       const transporter = nodemailer.createTransport({
@@ -39,10 +37,14 @@ router.post("/forgot", async (req, res) => {
 
       const mailOptions = {
         from: `${process.env.EMAIL}`,
-        to: `${username}`,
-        subject: "Sending Email using Node.js",
-        text: "That was easy!",
-      };
+        to: `giannicolaiduhan@gmail.com`,
+        subject: "Forgot Password",
+        text: "Forgot password click button to reset password",
+        html: `
+          <p>Forgot your password? Click the button below to change it:</p>
+          <a href="http://localhost:5500" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #007BFF; text-decoration: none; border-radius: 5px;">Reset Password</a>
+        `
+      };      
 
       transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
