@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Checkout button not found.');
     }
 
-    const searchButton = document.getElementById('search-button');
+    const searchButton = document.getElementById('searchButton'); // Make sure to use the correct button ID
     if (searchButton) {
         searchButton.addEventListener('click', searchProducts);
     } else {
@@ -77,7 +77,7 @@ function displayProducts(products) {
 
 // Search products by name
 function searchProducts() {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
+    const searchQuery = document.getElementById('searchBar').value.toLowerCase();
     if (!searchQuery) {
         displayProducts(allProducts); // If no search query, display all products
         return;
@@ -187,13 +187,14 @@ async function checkout() {
 
     try {
         const salesPromises = cart.map(async item => {
-            // Save sale to MongoDB
+            // Save sale to MongoDB with price field included
             const response = await fetch('http://localhost:5500/api/sales/create', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: item.name,
                     quantity: item.quantity,
+                    price: item.price,  // Include price in request body
                     date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
                 }),
             });

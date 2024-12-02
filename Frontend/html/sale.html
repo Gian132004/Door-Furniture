@@ -10,18 +10,19 @@
 <body class="bg-light">
   <div class="container-fluid vh-100">
     <div class="row h-100">
-      <div class="sidebar col-md-3 col-lg-2 border-end p-3">
+      <div class="sidebar col-md-3 col-lg-2  p-3">
         <div class="text-center mb-4">
           <img src="/Frontend/images/logo.png" alt="Logo" class="img-fluid" style="width: 80%; height: auto;">
         </div>
         <nav class="nav flex-column">
+          <a href="/Frontend/html/dashboard.html" class="nav-button active">Dashboard</a>
           <a href="/Frontend/html/pos.html" class="nav-button active">Point of Sale</a>
           <a href="/Frontend/html/products.html" class="nav-button">Products</a>
           <a href="/Frontend/html/sale.html" class="nav-button">Sales</a>
         </nav>
         <hr>
         <a href="/Frontend/html/login.html">
-          <button class="btn btn-danger w-100" style="margin-top: 200px;">Logout</button>
+          <button class="btn btn-danger w-100" style="margin-top: 150px;">Logout</button>
         </a>
       </div>
 
@@ -53,15 +54,21 @@
               <th>Product Title</th>
               <th>Date</th>
               <th>No. of Sold</th>
+              <th>Price</th> <!-- Added Price column -->
+              <th>Total Sales</th> <!-- Added Total Sales column -->
             </tr>
           </thead>
           <tbody></tbody>
           <tfoot>
             <tr class="fw-bold">
-              <td colspan="2" class="text-end">Total Sold:</td>
-              <td id="totalSold">0</td>
+                <td colspan="4" class="text-end">Total Sold:</td>
+                <td id="totalSold">0</td>
             </tr>
-          </tfoot>
+            <tr class="fw-bold">
+                <td colspan="4" class="text-end">Total Sales:</td>
+                <td id="totalSales">₱0.00</td>
+            </tr>
+        </tfoot>        
         </table>
 
         <!-- Pagination Buttons -->

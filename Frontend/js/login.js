@@ -19,7 +19,7 @@ document.querySelector('form').addEventListener('submit', async function (event)
         if (response.ok) {
             const data = await response.json();
             alert('Login successful! Redirecting...');
-            window.location.href = '/Frontend/html/pos.html'; // Redirect on success
+            window.location.href = '/Frontend/html/dashboard.html'; // Redirect on success
         } else {
             const errorData = await response.json();
             alert(`Login failed: ${errorData.message || 'Invalid credentials'}`);

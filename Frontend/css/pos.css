@@ -189,14 +189,14 @@
   }
   
   .main-content {
-    background-color: #F0E1C1;
+    background-color: #ffffff;
     padding: 20px;
     margin: 0 auto;
     width: 100%;
   }
   
   .product-list {
-    background-color: #F0E1C1;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
   }
@@ -226,4 +226,6 @@
     padding: 5px 15px;
     height: 43px;
   }
-  
+  .fs-4 {
+    color: #603e22;
+  }

@@ -1,4 +1,15 @@
-document.addEventListener('DOMContentLoaded', fetchProducts);
+document.addEventListener('DOMContentLoaded', () => {
+    fetchProducts();
+
+    const searchButton = document.getElementById('searchButton'); // Make sure to use the correct button ID
+    if (searchButton) {
+        searchButton.addEventListener('click', searchProducts);
+    } else {
+        console.error('Search button not found.');
+    }
+});
+
+let allProducts = []; // Global variable to store all products
 
 // Fetch all products from the backend API
 async function fetchProducts() {
@@ -8,6 +19,7 @@ async function fetchProducts() {
             throw new Error('Error fetching products');
         }
         const products = await response.json();
+        allProducts = products; // Store all products globally
         displayProducts(products);
     } catch (error) {
         console.error('Error:', error);
@@ -27,15 +39,15 @@ function displayProducts(products) {
         productCard.style.width = '16rem';
 
         productCard.innerHTML = `
-    <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
-    <div class="card-body">
-        <h5 class="card-title">${product.title}</h5>
-        <p class="card-text">Stocks: ${product.stock}</p>
-        <p class="card-text">Price: ₱${product.price}</p>
-        <button class="btn btn-warning text-white editBtn fw-bold" data-id="${product._id}">Edit</button>
-        <button class="btn btn-danger deleteBtn fw-bold" data-id="${product._id}">Delete</button>
-    </div>
-`;
+            <img src="http://localhost:5500/images/${product.image}" class="card-img-top" alt="${product.title}">
+            <div class="card-body">
+                <h5 class="card-title">${product.title}</h5>
+                <p class="card-text">Stocks: ${product.stock}</p>
+                <p class="card-text">Price: ₱${product.price}</p>
+                <button class="btn btn-warning text-white editBtn fw-bold" data-id="${product._id}">Edit</button>
+                <button class="btn btn-danger deleteBtn fw-bold" data-id="${product._id}">Delete</button>
+            </div>
+        `;
 
         productsContainer.appendChild(productCard);
     });
@@ -45,6 +57,21 @@ function displayProducts(products) {
         btn.addEventListener('click', (e) => openEditModal(e.target.dataset.id)));
     document.querySelectorAll('.deleteBtn').forEach(btn => 
         btn.addEventListener('click', (e) => deleteProduct(e.target.dataset.id)));
+}
+
+// Search products by name
+function searchProducts() {
+    const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+    if (!searchQuery) {
+        displayProducts(allProducts); // If no search query, display all products
+        return;
+    }
+
+    const filteredProducts = allProducts.filter(product => 
+        product.title.toLowerCase().includes(searchQuery)
+    );
+
+    displayProducts(filteredProducts); // Display the filtered products
 }
 
 // Add a new product

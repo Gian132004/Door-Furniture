@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', fetchSales);
 
 let salesData = []; // Store all sales data
 let currentPage = 1; // Current page for pagination
-const itemsPerPage = 10; // Items per page
+const itemsPerPage = 5; // Items per page
 
 // Fetch sales data from the API
 async function fetchSales() {
@@ -14,10 +14,14 @@ async function fetchSales() {
 
         salesData = await response.json();
 
-        // Sort sales data by date (latest first)
+        // Sort sales by date in descending order (latest first)
         salesData.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+        // Update total sold count and total sales
         updateTotalSold();
+        updateTotalSales();
+
+        // Display the sales data
         displaySales(salesData);
     } catch (error) {
         console.error('Error fetching sales:', error);
@@ -25,35 +29,70 @@ async function fetchSales() {
     }
 }
 
-// Update total sold count
+
+
+
+// Update total sold count for overall sales (total from all data)
 function updateTotalSold() {
-    const totalSoldElement = document.getElementById('totalSold');
-    const totalSold = salesData.reduce((sum, sale) => sum + sale.quantity, 0);
-    totalSoldElement.textContent = totalSold;
+    const totalSold = salesData.reduce((total, sale) => total + sale.quantity, 0);
+    document.getElementById('totalSold').textContent = totalSold;
+}
+
+function updateTotalSales() {
+    const totalSales = salesData.reduce((total, sale) => total + (sale.quantity * sale.price), 0);
+    document.getElementById('totalSales').textContent = `₱${totalSales.toFixed(2)}`;
 }
 
 // Display sales data in the table with pagination
 function displaySales(sales) {
     const salesTableBody = document.querySelector('#salesTable tbody');
-    salesTableBody.innerHTML = ''; // Clear previous sales
+    salesTableBody.innerHTML = ''; // Clear any existing rows
 
-    // Calculate start and end index for current page
+    // Calculate pagination indices
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const salesToDisplay = sales.slice(start, end);
 
+    // Render the sales in the table
     salesToDisplay.forEach((sale) => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${sale.title}</td>
             <td>${sale.date}</td>
             <td>${sale.quantity}</td>
+            <td>₱${sale.price.toFixed(2)}</td>
+            <td>₱${(sale.quantity * sale.price).toFixed(2)}</td>
         `;
         salesTableBody.appendChild(row);
     });
 
+    // Update pagination buttons
     updatePaginationButtons(sales);
 }
+
+function updatePaginationButtons(sales) {
+    const totalPages = Math.ceil(sales.length / itemsPerPage);
+    const paginationContainer = document.getElementById('pagination');
+
+    paginationContainer.innerHTML = ''; // Clear previous pagination
+
+    // Create buttons based on the total pages
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.classList.add('btn', 'btn-secondary', 'mx-1');
+
+        // Event listener to go to the corresponding page
+        button.addEventListener('click', () => {
+            currentPage = i;
+            displaySales(sales);
+        });
+
+        paginationContainer.appendChild(button);
+    }
+}
+
+
 
 // Apply filters to the sales data
 function filterSales() {
@@ -61,6 +100,7 @@ function filterSales() {
     const month = document.getElementById('monthFilter').value;
     const year = document.getElementById('yearFilter').value;
 
+    // Filter sales based on day, month, and year
     const filteredSales = salesData.filter((sale) => {
         const [saleYear, saleMonth, saleDay] = sale.date.split('-');
         return (
@@ -70,12 +110,20 @@ function filterSales() {
         );
     });
 
-    // Sort filtered sales data by date (latest first)
+    // Sort the filtered sales by date in descending order (latest first)
     filteredSales.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    currentPage = 1; // Reset to the first page
+    // Reset to the first page after applying the filter
+    currentPage = 1;
     displaySales(filteredSales);
+
+    // Update totals for the filtered sales
+    updateTotalSold();
+    updateTotalSales();
 }
+
+
+
 
 // Clear filters and reset the table
 function clearFilters() {
@@ -84,7 +132,11 @@ function clearFilters() {
     document.getElementById('yearFilter').value = '';
 
     currentPage = 1; // Reset to the first page
-    displaySales(salesData);
+    displaySales(salesData); // Display all sales again
+
+    // Update the total sold count and total sales for unfiltered data
+    updateTotalSold();
+    updateTotalSales();
 }
 
 // Update the pagination buttons
