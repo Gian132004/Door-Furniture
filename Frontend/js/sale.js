@@ -15,8 +15,9 @@ async function fetchSales() {
         salesData = await response.json();
 
         // Sort sales by date in descending order (latest first)
+        salesData.reverse();
         salesData.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+       
         // Update total sold count and total sales
         updateTotalSold();
         updateTotalSales();
