@@ -10,105 +10,75 @@
 <body class="bg-light">
   <div class="container-fluid vh-100">
     <div class="row h-100">
-      <div class="sidebar col-md-3 col-lg-2 border-end p-3">
-        <h2 class="sidebar-title fs-5 text-center mb-4">Anthony’s Door Furniture</h2>
+      <div class="sidebar col-md-3 col-lg-2  p-3">
+        <div class="text-center mb-4">
+          <img src="/Frontend/images/logo.png" alt="Logo" class="img-fluid" style="width: 80%; height: auto;">
+        </div>
         <nav class="nav flex-column">
-          <a href="/Frontend/html/pos.html" class="nav-button">Point of Sale</a>
+          <a href="/Frontend/html/dashboard.html" class="nav-button active">Dashboard</a>
+          <a href="/Frontend/html/pos.html" class="nav-button active">Point of Sale</a>
           <a href="/Frontend/html/products.html" class="nav-button">Products</a>
-          <a href="/Frontend/html/sale.html" class="nav-button btn-danger-sale active">Sales</a>
+          <a href="/Frontend/html/sale.html" class="nav-button">Sales</a>
         </nav>
         <hr>
-        <button class="btn btn-danger w-100">Logout</button>
+        <a href="/Frontend/html/login.html">
+          <button class="btn btn-danger w-100" style="margin-top: 150px;">Logout</button>
+        </a>
       </div>
-    
+
       <div class="col-md-9 col-lg-10 p-4">
-        <h1 class="fs-4">Sales</h1>
-        
-        <!-- Month Filter Dropdown -->
-        <div class="mb-3">
-          <label for="monthFilter" class="form-label">Filter by Month</label>
-          <select id="monthFilter" class="form-select w-auto" onchange="filterSalesByMonth()">
-            <option value="all">All</option>
-            <option value="11-2024">November 2024</option>
-            <option value="10-2024">October 2024</option>
-            <option value="10-2024">October 2024</option>
-            <!-- Add more months if needed -->
-          </select>
+        <h1 class="fs-4 fw-bold">SALES REPORT</h1>
+
+        <!-- Filters -->
+        <div class="d-flex gap-3 align-items-center mb-3">
+          <div>
+            <label for="dayFilter" class="form-label">Day</label>
+            <input type="number" id="dayFilter" class="form-control w-auto" placeholder="DD" min="1" max="31">
+          </div>
+          <div>
+            <label for="monthFilter" class="form-label">Month</label>
+            <input type="number" id="monthFilter" class="form-control w-auto" placeholder="MM" min="1" max="12">
+          </div>
+          <div>
+            <label for="yearFilter" class="form-label">Year</label>
+            <input type="number" id="yearFilter" class="form-control w-auto" placeholder="YYYY">
+          </div>
+          <button class="btn" style="margin-top: 30px; background: #a04932; color: white; font-weight: bold;" onclick="filterSales()">Apply Filters</button>
+          <button class="btn btn-danger fw-bold" style="margin-top: 30px;" onclick="clearFilters()">Clear Filters</button>
         </div>
-        
+
+        <!-- Sales Table -->
         <table class="table table-striped table-bordered mt-3" id="salesTable">
           <thead>
             <tr>
               <th>Product Title</th>
               <th>Date</th>
               <th>No. of Sold</th>
+              <th>Price</th> <!-- Added Price column -->
+              <th>Total Sales</th> <!-- Added Total Sales column -->
             </tr>
           </thead>
-          <tbody>
-            <tr data-date="2024-11-22">
-              <td>American Door</td>
-              <td>2024-11-22</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-10-22">
-              <td>Interior Double Door</td>
-              <td>2024-10-22</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-9-22">
-              <td>Florida Door</td>
-              <td>2024-9-22</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-10-23">
-              <td>Unique Modern Door</td>
-              <td>2024-10-23</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-9-23">
-              <td>Atlanta Door</td>
-              <td>2024-9-23</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-9-24">
-              <td>Timber Door</td>
-              <td>2024-9-24</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-11-25">
-              <td>York Door</td>
-              <td>2024-11-25</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-10-25">
-              <td>Booxton Door</td>
-              <td>2024-10-25</td>
-              <td>10</td>
-            </tr>
-            <tr data-date="2024-10-26">
-              <td>Classic Door</td>
-              <td>2024-10-26</td>
-              <td>10</td>
-            </tr>
-            <!-- Total Sold Row -->
-            <tr id="totalSoldRow" class="fw-bold">
-              <td colspan="2" class="text-end">Total Sold:</td>
-              <td id="totalSold">0</td> <!-- This will be updated dynamically -->
-            </tr>
-          </tbody>
+          <tbody></tbody>
           <tfoot>
-            <tr>
-              <td colspan="2" class="text-end fw-bold">Total Sold:</td>
-              <td>30</td>
+            <tr class="fw-bold">
+                <td colspan="4" class="text-end">Total Sold:</td>
+                <td id="totalSold">0</td>
             </tr>
-          </tfoot>
+            <tr class="fw-bold">
+                <td colspan="4" class="text-end">Total Sales:</td>
+                <td id="totalSales">₱0.00</td>
+            </tr>
+        </tfoot>        
         </table>
+
+        <!-- Pagination Buttons -->
+        <div class="d-flex justify-content-end mt-3" id="pagination"></div>
       </div>
     </div>
   </div>
 
-  <!-- Link to External JavaScript -->
+  <!-- JavaScript -->
   <script src="/Frontend/js/sale.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+</body>
+</html>

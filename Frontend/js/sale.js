@@ -1,76 +1,171 @@
-// Function to calculate and update the total sold
+document.addEventListener('DOMContentLoaded', fetchSales);
+
+let salesData = []; // Store all sales data
+let currentPage = 1; // Current page for pagination
+const itemsPerPage = 5; // Items per page
+
+// Fetch sales data from the API
+async function fetchSales() {
+    try {
+        const response = await fetch('http://localhost:5500/api/sales/all');
+        if (!response.ok) {
+            throw new Error('Failed to fetch sales data');
+        }
+
+        salesData = await response.json();
+
+        // Sort sales by date in descending order (latest first)
+        salesData.reverse();
+        salesData.sort((a, b) => new Date(b.date) - new Date(a.date));
+       
+        // Update total sold count and total sales
+        updateTotalSold();
+        updateTotalSales();
+
+        // Display the sales data
+        displaySales(salesData);
+    } catch (error) {
+        console.error('Error fetching sales:', error);
+        alert('Failed to load sales data');
+    }
+}
+
+
+
+
+// Update total sold count for overall sales (total from all data)
 function updateTotalSold() {
-  var rows = document.getElementById('salesTable').getElementsByTagName('tr');
-  var totalSold = 0;
-
-  // Iterate over each row (skip the header and total row)
-  for (var i = 1; i < rows.length - 1; i++) {
-      var soldCell = rows[i].getElementsByTagName('td')[2]; // The third column (No. of Sold)
-      var sold = parseInt(soldCell.textContent || soldCell.innerText, 10);
-      totalSold += sold; // Add to total sold
-  }
-
-  // Update the total sold in the Total Sold row
-  var totalSoldCell = document.querySelector("#totalSold");
-  if (totalSoldCell) {
-      totalSoldCell.textContent = totalSold; // Update with the calculated total sold
-  }
+    const totalSold = salesData.reduce((total, sale) => total + sale.quantity, 0);
+    document.getElementById('totalSold').textContent = totalSold;
 }
 
-// Helper function to extract month from date in 'YYYY-MM-DD' format
-function extractMonthFromDate(date) {
-  return date.slice(5, 7) + '-' + date.slice(0, 4); // Extracts MM-YYYY (e.g. 11-2024)
+function updateTotalSales() {
+    const totalSales = salesData.reduce((total, sale) => total + (sale.quantity * sale.price), 0);
+    document.getElementById('totalSales').textContent = `₱${totalSales.toFixed(2)}`;
 }
 
-// Function to filter sales by the selected month and update the total sales
-function filterSalesByMonth() {
-  // Get the selected month from the dropdown
-  var selectedMonth = document.getElementById('monthFilter').value;
+// Display sales data in the table with pagination
+function displaySales(sales) {
+    const salesTableBody = document.querySelector('#salesTable tbody');
+    salesTableBody.innerHTML = ''; // Clear any existing rows
 
-  // Get all table rows (skip header and the total row)
-  var rows = document.getElementById('salesTable').getElementsByTagName('tr');
+    // Calculate pagination indices
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const salesToDisplay = sales.slice(start, end);
 
-  var totalSold = 0;
-  var anyVisibleRow = false; // Flag to check if any row is visible
+    // Render the sales in the table
+    salesToDisplay.forEach((sale) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${sale.title}</td>
+            <td>${sale.date}</td>
+            <td>${sale.quantity}</td>
+            <td>₱${sale.price.toFixed(2)}</td>
+            <td>₱${(sale.quantity * sale.price).toFixed(2)}</td>
+        `;
+        salesTableBody.appendChild(row);
+    });
 
-  // Iterate over each row (skip the header and footer)
-  for (var i = 1; i < rows.length - 1; i++) { // row[0] is the header, and row[rows.length-1] is the Total Sold row
-      var dateCell = rows[i].getElementsByTagName('td')[1]; // The second column (date)
-      var soldCell = rows[i].getElementsByTagName('td')[2]; // The third column (No. of Sold)
-
-      // Extract the date from the row and the number of items sold
-      var date = dateCell.textContent || dateCell.innerText;
-      var sold = parseInt(soldCell.textContent || soldCell.innerText, 10);
-
-      // Get the month from the date
-      var rowMonth = extractMonthFromDate(date);
-
-      // Show or hide the row based on the selected month
-      if (selectedMonth === "all" || selectedMonth === rowMonth) {
-          rows[i].style.display = ""; // Show the row
-          totalSold += sold; // Add to total sold
-          anyVisibleRow = true;
-      } else {
-          rows[i].style.display = "none"; // Hide the row
-      }
-  }
-
-  // Update the total sold in the Total Sold row
-  var totalSoldCell = document.querySelector("#totalSold");
-  if (totalSoldCell) {
-      totalSoldCell.textContent = totalSold; // Update with the calculated total sold
-  }
-
-  // If no rows are visible after filtering, you could display a "No data" message (optional)
-  if (!anyVisibleRow) {
-      document.getElementById('totalSoldRow').style.display = 'none'; // Hide the total row if no data
-  } else {
-      document.getElementById('totalSoldRow').style.display = ''; // Show the total row if there's data
-  }
+    // Update pagination buttons
+    updatePaginationButtons(sales);
 }
 
-// Initial call to update the total when the page loads
-window.onload = function() {
-  updateTotalSold();
-  filterSalesByMonth(); // Optional: To apply initial filter (if needed)
-};
+function updatePaginationButtons(sales) {
+    const totalPages = Math.ceil(sales.length / itemsPerPage);
+    const paginationContainer = document.getElementById('pagination');
+
+    paginationContainer.innerHTML = ''; // Clear previous pagination
+
+    // Create buttons based on the total pages
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.classList.add('btn', 'btn-secondary', 'mx-1');
+
+        // Event listener to go to the corresponding page
+        button.addEventListener('click', () => {
+            currentPage = i;
+            displaySales(sales);
+        });
+
+        paginationContainer.appendChild(button);
+    }
+}
+
+
+
+// Apply filters to the sales data
+function filterSales() {
+    const day = document.getElementById('dayFilter').value;
+    const month = document.getElementById('monthFilter').value;
+    const year = document.getElementById('yearFilter').value;
+
+    // Filter sales based on day, month, and year
+    const filteredSales = salesData.filter((sale) => {
+        const [saleYear, saleMonth, saleDay] = sale.date.split('-');
+        return (
+            (!day || saleDay === day.padStart(2, '0')) &&
+            (!month || saleMonth === month.padStart(2, '0')) &&
+            (!year || saleYear === year)
+        );
+    });
+
+    // Sort the filtered sales by date in descending order (latest first)
+    filteredSales.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Reset to the first page after applying the filter
+    currentPage = 1;
+    displaySales(filteredSales);
+
+    // Update totals for the filtered sales
+    updateTotalSold();
+    updateTotalSales();
+}
+
+
+
+
+// Clear filters and reset the table
+function clearFilters() {
+    document.getElementById('dayFilter').value = '';
+    document.getElementById('monthFilter').value = '';
+    document.getElementById('yearFilter').value = '';
+
+    currentPage = 1; // Reset to the first page
+    displaySales(salesData); // Display all sales again
+
+    // Update the total sold count and total sales for unfiltered data
+    updateTotalSold();
+    updateTotalSales();
+}
+
+// Update the pagination buttons
+function updatePaginationButtons(sales) {
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = ''; // Clear existing buttons
+
+    // Back button
+    if (currentPage > 1) {
+        const backButton = document.createElement('button');
+        backButton.className = 'btn btn-secondary me-2';
+        backButton.textContent = 'Back';
+        backButton.onclick = () => {
+            currentPage--;
+            displaySales(sales);
+        };
+        paginationContainer.appendChild(backButton);
+    }
+
+    // Next button
+    if (currentPage * itemsPerPage < sales.length) {
+        const nextButton = document.createElement('button');
+        nextButton.className = 'btn btn-secondary';
+        nextButton.textContent = 'Next';
+        nextButton.onclick = () => {
+            currentPage++;
+            displaySales(sales);
+        };
+        paginationContainer.appendChild(nextButton);
+    }
+}
